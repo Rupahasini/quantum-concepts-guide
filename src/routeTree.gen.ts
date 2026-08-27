@@ -17,11 +17,11 @@ import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as RewardsRouteImport } from './routes/rewards'
 import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as StackRouteImport } from './routes/stack'
-import { Route as SyllabusRouteImport } from './routes/syllabus'
 import { Route as TechniquesRouteImport } from './routes/techniques'
 import { Route as TestsRouteImport } from './routes/tests'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as ApiAssistantRouteImport } from './routes/api/assistant'
+import { Route as SyllabusIndexRouteImport } from './routes/syllabus.index'
 import { Route as SyllabusChapterIdRouteImport } from './routes/syllabus.$chapterId'
 import { Route as TestsTestIdRouteImport } from './routes/tests.$testId'
 
@@ -64,11 +64,6 @@ const StackRoute = StackRouteImport.update({
   path: '/stack',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SyllabusRoute = SyllabusRouteImport.update({
-  id: '/syllabus',
-  path: '/syllabus',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TechniquesRoute = TechniquesRouteImport.update({
   id: '/techniques',
   path: '/techniques',
@@ -87,6 +82,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
 const ApiAssistantRoute = ApiAssistantRouteImport.update({
   id: '/api/assistant',
   path: '/api/assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SyllabusIndexRoute = SyllabusIndexRouteImport.update({
+  id: '/syllabus/',
+  path: '/syllabus/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SyllabusChapterIdRoute = SyllabusChapterIdRouteImport.update({
@@ -108,13 +108,13 @@ export interface FileRoutesByFullPath {
   '/rewards': typeof RewardsRoute
   '/simulator': typeof SimulatorRoute
   '/stack': typeof StackRoute
-  '/syllabus': typeof SyllabusRouteWithChildren
   '/techniques': typeof TechniquesRoute
   '/tests': typeof TestsRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
   '/tests/$testId': typeof TestsTestIdRoute
+  '/syllabus/': typeof SyllabusIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -124,13 +124,13 @@ export interface FileRoutesByTo {
   '/rewards': typeof RewardsRoute
   '/simulator': typeof SimulatorRoute
   '/stack': typeof StackRoute
-  '/syllabus': typeof SyllabusRouteWithChildren
   '/techniques': typeof TechniquesRoute
   '/tests': typeof TestsRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
   '/tests/$testId': typeof TestsTestIdRoute
+  '/syllabus': typeof SyllabusIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -142,13 +142,13 @@ export interface FileRoutesById {
   '/rewards': typeof RewardsRoute
   '/simulator': typeof SimulatorRoute
   '/stack': typeof StackRoute
-  '/syllabus': typeof SyllabusRouteWithChildren
   '/techniques': typeof TechniquesRoute
   '/tests': typeof TestsRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
   '/tests/$testId': typeof TestsTestIdRoute
+  '/syllabus/': typeof SyllabusIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -160,13 +160,13 @@ export interface FileRouteTypes {
     | '/rewards'
     | '/simulator'
     | '/stack'
-    | '/syllabus'
     | '/techniques'
     | '/tests'
     | '/dashboard'
     | '/api/assistant'
     | '/syllabus/$chapterId'
     | '/tests/$testId'
+    | '/syllabus/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -176,13 +176,13 @@ export interface FileRouteTypes {
     | '/rewards'
     | '/simulator'
     | '/stack'
-    | '/syllabus'
     | '/techniques'
     | '/tests'
     | '/dashboard'
     | '/api/assistant'
     | '/syllabus/$chapterId'
     | '/tests/$testId'
+    | '/syllabus'
   id:
     | '__root__'
     | '/'
@@ -193,13 +193,13 @@ export interface FileRouteTypes {
     | '/rewards'
     | '/simulator'
     | '/stack'
-    | '/syllabus'
     | '/techniques'
     | '/tests'
     | '/_authenticated/dashboard'
     | '/api/assistant'
     | '/syllabus/$chapterId'
     | '/tests/$testId'
+    | '/syllabus/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -211,10 +211,10 @@ export interface RootRouteChildren {
   RewardsRoute: typeof RewardsRoute
   SimulatorRoute: typeof SimulatorRoute
   StackRoute: typeof StackRoute
-  SyllabusRoute: typeof SyllabusRouteWithChildren
   TechniquesRoute: typeof TechniquesRoute
   TestsRoute: typeof TestsRouteWithChildren
   ApiAssistantRoute: typeof ApiAssistantRoute
+  SyllabusIndexRoute: typeof SyllabusIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -275,13 +275,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StackRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/syllabus': {
-      id: '/syllabus'
-      path: '/syllabus'
-      fullPath: '/syllabus'
-      preLoaderRoute: typeof SyllabusRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/techniques': {
       id: '/techniques'
       path: '/techniques'
@@ -308,6 +301,13 @@ declare module '@tanstack/react-router' {
       path: '/api/assistant'
       fullPath: '/api/assistant'
       preLoaderRoute: typeof ApiAssistantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/syllabus/': {
+      id: '/syllabus/'
+      path: '/syllabus'
+      fullPath: '/syllabus/'
+      preLoaderRoute: typeof SyllabusIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/syllabus/$chapterId': {
@@ -338,18 +338,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface SyllabusRouteChildren {
-  SyllabusChapterIdRoute: typeof SyllabusChapterIdRoute
-}
-
-const SyllabusRouteChildren: SyllabusRouteChildren = {
-  SyllabusChapterIdRoute: SyllabusChapterIdRoute,
-}
-
-const SyllabusRouteWithChildren = SyllabusRoute._addFileChildren(
-  SyllabusRouteChildren,
-)
-
 interface TestsRouteChildren {
   TestsTestIdRoute: typeof TestsTestIdRoute
 }
@@ -369,10 +357,10 @@ const rootRouteChildren: RootRouteChildren = {
   RewardsRoute: RewardsRoute,
   SimulatorRoute: SimulatorRoute,
   StackRoute: StackRoute,
-  SyllabusRoute: SyllabusRouteWithChildren,
   TechniquesRoute: TechniquesRoute,
   TestsRoute: TestsRouteWithChildren,
   ApiAssistantRoute: ApiAssistantRoute,
+  SyllabusIndexRoute: SyllabusIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
