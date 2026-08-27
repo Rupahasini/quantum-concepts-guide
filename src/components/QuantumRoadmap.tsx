@@ -64,9 +64,9 @@ export function QuantumRoadmap() {
             stroke="url(#qr-line)"
             strokeWidth="1.6"
             strokeLinecap="round"
+            strokeDasharray="0.025 0.025"
             vectorEffect="non-scaling-stroke"
             pathLength={1}
-            strokeDasharray="1"
             strokeDashoffset={1 - progressRatio}
             style={{ transition: "stroke-dashoffset 900ms ease" }}
           />
