@@ -454,7 +454,7 @@ const registry: Record<DiagramKind, () => React.JSX.Element> = {
   "hardware-stack": HardwareStack,
 };
 
-export function Diagram({ kind, caption }: { kind: DiagramKind; caption?: string }) {
+export function Diagram({ kind, caption }: { kind: DiagramKind; caption?: string | undefined }) {
   const Component = registry[kind];
   return (
     <figure className="panel my-6 p-4 sm:p-6">
