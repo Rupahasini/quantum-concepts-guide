@@ -14,45 +14,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      profiles: {
-        Row: {
-          completed_phases: string[]
-          country: string | null
-          created_at: string
-          display_name: string | null
-          gender: string | null
-          id: string
-          level: number
-          onboarded: boolean
-          updated_at: string
-          xp: number
-        }
-        Insert: {
-          completed_phases?: string[]
-          country?: string | null
-          created_at?: string
-          display_name?: string | null
-          gender?: string | null
-          id: string
-          level?: number
-          onboarded?: boolean
-          updated_at?: string
-          xp?: number
-        }
-        Update: {
-          completed_phases?: string[]
-          country?: string | null
-          created_at?: string
-          display_name?: string | null
-          gender?: string | null
-          id?: string
-          level?: number
-          onboarded?: boolean
-          updated_at?: string
-          xp?: number
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
