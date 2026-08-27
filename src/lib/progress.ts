@@ -9,6 +9,8 @@ export type ProgressState = {
   projectsSubmitted: string[];
   unlockedPerks: string[];
   assignmentsDone: string[];
+  /** lesson sections read, keyed by chapter id */
+  sectionsRead: Record<string, string[]>;
   /** best stars earned per test id (tests are re-takeable, best score keeps) */
   testStars: Record<string, number>;
 };
@@ -24,6 +26,7 @@ const EMPTY: ProgressState = {
   projectsSubmitted: [],
   unlockedPerks: [],
   assignmentsDone: [],
+  sectionsRead: {},
   testStars: {},
 };
 
@@ -105,6 +108,21 @@ export const progressActions = {
     const delta = stars - best;
     set({ ...state, testStars: { ...state.testStars, [id]: stars }, stars: state.stars + delta });
     return delta;
+  },
+  toggleSection(chapterId: string, sectionId: string) {
+    const current = state.sectionsRead[chapterId] ?? [];
+    const read = current.includes(sectionId);
+    const next = read ? current.filter((x) => x !== sectionId) : [...current, sectionId];
+    set({ ...state, sectionsRead: { ...state.sectionsRead, [chapterId]: next } });
+    return !read;
+  },
+  setSectionsRead(chapterId: string, sectionIds: string[]) {
+    set({ ...state, sectionsRead: { ...state.sectionsRead, [chapterId]: sectionIds } });
+  },
+  completeChapter(id: string) {
+    if (state.completedChapters.includes(id)) return false;
+    set({ ...state, completedChapters: [...state.completedChapters, id] });
+    return true;
   },
   toggleChapter(id: string) {
     const done = state.completedChapters.includes(id);

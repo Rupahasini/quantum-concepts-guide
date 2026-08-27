@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, CheckCircle2, Circle, Lightbulb, Star } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Circle, Lightbulb, Loader2, Lock, Star } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Assignment } from "@/components/Assignment";
@@ -11,6 +11,8 @@ import { chapters } from "@/lib/curriculum";
 import { lessons } from "@/lib/lessons";
 import { Lesson } from "@/components/Lesson";
 import { useProgress } from "@/lib/progress";
+import { useSession } from "@/lib/auth";
+import { quizFor } from "@/lib/quizzes";
 
 export const Route = createFileRoute("/syllabus/$chapterId")({
   loader: ({ params }) => {
@@ -40,6 +42,7 @@ export const Route = createFileRoute("/syllabus/$chapterId")({
 
 function ChapterPage() {
   const { chapter } = Route.useLoaderData();
+  const { session, loading: authLoading } = useSession();
   const { completedChapters, katasDone, actions } = useProgress();
   const [showHint, setShowHint] = useState(false);
   const assignment = assignmentByChapter(chapter.id);
@@ -65,114 +68,146 @@ function ChapterPage() {
       <h1 className="mt-3 text-3xl font-semibold sm:text-4xl">{chapter.title}</h1>
       <p className="mt-4 text-muted-foreground">{chapter.summary}</p>
 
-      <div className="mt-8 flex flex-wrap gap-3">
-        <Button
-          variant={done ? "secondary" : "default"}
-          onClick={() => {
-            const nowDone = actions.toggleChapter(chapter.id);
-            toast[nowDone ? "success" : "info"](
-              nowDone ? "Chapter marked complete" : "Chapter reopened",
-              { description: nowDone ? "The next chapter is unlocked." : undefined },
-            );
-          }}
-        >
-          {done ? <CheckCircle2 className="size-4" /> : <Circle className="size-4" />}
-          {done ? "Core content complete" : "Mark core content complete"}
-        </Button>
-        <Button asChild variant="outline">
-          <Link to="/simulator">Open circuit lab</Link>
-        </Button>
-      </div>
-
-      <section className="mt-12 grid gap-4 sm:grid-cols-2">
-        <div className="panel p-5">
-          <h2 className="text-sm font-semibold">Learning objectives</h2>
-          <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-            {chapter.objectives.map((o) => (
-              <li key={o} className="flex gap-2">
-                <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
-                {o}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="panel p-5">
-          <h2 className="text-sm font-semibold">Key concepts</h2>
-          <dl className="mt-3 space-y-3 text-sm">
-            {chapter.concepts.map((c) => (
-              <div key={c.term}>
-                <dt className="font-mono text-xs text-primary">{c.term}</dt>
-                <dd className="text-muted-foreground">{c.detail}</dd>
+      {(authLoading || !session) && (
+        <div className="panel mt-8 p-8 text-center">
+          {authLoading ? (
+            <Loader2 className="mx-auto size-6 animate-spin text-muted-foreground" />
+          ) : (
+            <>
+              <div className="mx-auto grid size-12 place-items-center rounded-full bg-primary/10">
+                <Lock className="size-5 text-primary" />
               </div>
-            ))}
-          </dl>
-        </div>
-      </section>
-
-      <Lesson blocks={lessons[chapter.id] ?? []} />
-
-      <section className="mt-12">
-        <h2 className="mb-3 text-lg font-semibold">Worked code</h2>
-        <CodeBlock label={chapter.code.label} code={chapter.code.snippet} />
-      </section>
-
-      <section className="mt-8">
-        <Quiz quizId={chapter.id} questions={chapter.quiz} />
-      </section>
-
-      <section className="panel mt-8 p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-base font-semibold">{chapter.kata.title}</h2>
-          <span className="flex items-center gap-1.5 rounded-full bg-star/15 px-3 py-1 text-xs font-medium text-star">
-            <Star className="size-3.5 fill-star" /> {chapter.kata.stars} stars
-          </span>
-        </div>
-        <p className="mt-2 text-sm text-muted-foreground">{chapter.kata.task}</p>
-        {showHint && (
-          <p className="mt-3 animate-in fade-in slide-in-from-top-1 rounded-lg bg-secondary p-3 text-sm">
-            <Lightbulb className="mr-2 inline size-4 text-star" />
-            {chapter.kata.hint}
-          </p>
-        )}
-        <div className="mt-4 flex flex-wrap gap-2">
-          <Button
-            size="sm"
-            variant={kataDone ? "secondary" : "default"}
-            disabled={kataDone}
-            onClick={() => {
-              if (actions.awardKata(chapter.kata.id, chapter.kata.stars)) {
-                toast.success(`Kata mastered — +${chapter.kata.stars} stars`);
-              }
-            }}
-          >
-            {kataDone ? "Kata mastered" : "Mark kata mastered"}
-          </Button>
-          <Button size="sm" variant="ghost" onClick={() => setShowHint((v) => !v)}>
-            {showHint ? "Hide hint" : "Show hint"}
-          </Button>
-        </div>
-      </section>
-
-      {assignment && (
-        <div className="mt-8">
-          <Assignment assignment={assignment} />
+              <h2 className="mt-4 text-lg font-semibold">Chapter content is locked</h2>
+              <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
+                Sign in or create a free account to open the full lesson, interactive diagrams,
+                checkpoint quiz and kata for this chapter — and to keep your progress and stars.
+              </p>
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
+                <Button asChild>
+                  <Link to="/auth">Log in</Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <Link to="/auth">Create account</Link>
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       )}
 
-      {phaseTest && (
-        <section className="panel mt-8 flex flex-wrap items-center justify-between gap-3 p-5">
-          <div>
-            <h2 className="text-base font-semibold">{phaseTest.title}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Finish the {chapter.track} chapters, then sit the graded test for up to 5 stars.
-            </p>
-          </div>
-          <Button asChild variant="outline" size="sm">
-            <Link to="/tests/$testId" params={{ testId: phaseTest.id }}>
-              Go to phase test
-            </Link>
+
+      {session && (
+        <>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Button
+            variant={done ? "secondary" : "default"}
+            onClick={() => {
+              const nowDone = actions.toggleChapter(chapter.id);
+              toast[nowDone ? "success" : "info"](
+                nowDone ? "Chapter marked complete" : "Chapter reopened",
+                { description: nowDone ? "The next chapter is unlocked." : undefined },
+              );
+            }}
+          >
+            {done ? <CheckCircle2 className="size-4" /> : <Circle className="size-4" />}
+            {done ? "Core content complete" : "Mark core content complete"}
           </Button>
+          <Button asChild variant="outline">
+            <Link to="/simulator">Open circuit lab</Link>
+          </Button>
+        </div>
+
+        <section className="mt-12 grid gap-4 sm:grid-cols-2">
+          <div className="panel p-5">
+            <h2 className="text-sm font-semibold">Learning objectives</h2>
+            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              {chapter.objectives.map((o) => (
+                <li key={o} className="flex gap-2">
+                  <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
+                  {o}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="panel p-5">
+            <h2 className="text-sm font-semibold">Key concepts</h2>
+            <dl className="mt-3 space-y-3 text-sm">
+              {chapter.concepts.map((c) => (
+                <div key={c.term}>
+                  <dt className="font-mono text-xs text-primary">{c.term}</dt>
+                  <dd className="text-muted-foreground">{c.detail}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </section>
+
+        <Lesson blocks={lessons[chapter.id] ?? []} chapterId={chapter.id} />
+
+        <section className="mt-12">
+          <h2 className="mb-3 text-lg font-semibold">Worked code</h2>
+          <CodeBlock label={chapter.code.label} code={chapter.code.snippet} />
+        </section>
+
+        <section className="mt-8">
+          <Quiz quizId={chapter.id} questions={quizFor(chapter)} />
+        </section>
+
+        <section className="panel mt-8 p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-base font-semibold">{chapter.kata.title}</h2>
+            <span className="flex items-center gap-1.5 rounded-full bg-star/15 px-3 py-1 text-xs font-medium text-star">
+              <Star className="size-3.5 fill-star" /> {chapter.kata.stars} stars
+            </span>
+          </div>
+          <p className="mt-2 text-sm text-muted-foreground">{chapter.kata.task}</p>
+          {showHint && (
+            <p className="mt-3 animate-in fade-in slide-in-from-top-1 rounded-lg bg-secondary p-3 text-sm">
+              <Lightbulb className="mr-2 inline size-4 text-star" />
+              {chapter.kata.hint}
+            </p>
+          )}
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Button
+              size="sm"
+              variant={kataDone ? "secondary" : "default"}
+              disabled={kataDone}
+              onClick={() => {
+                if (actions.awardKata(chapter.kata.id, chapter.kata.stars)) {
+                  toast.success(`Kata mastered — +${chapter.kata.stars} stars`);
+                }
+              }}
+            >
+              {kataDone ? "Kata mastered" : "Mark kata mastered"}
+            </Button>
+            <Button size="sm" variant="ghost" onClick={() => setShowHint((v) => !v)}>
+              {showHint ? "Hide hint" : "Show hint"}
+            </Button>
+          </div>
+        </section>
+
+        {assignment && (
+          <div className="mt-8">
+            <Assignment assignment={assignment} />
+          </div>
+        )}
+
+        {phaseTest && (
+          <section className="panel mt-8 flex flex-wrap items-center justify-between gap-3 p-5">
+            <div>
+              <h2 className="text-base font-semibold">{phaseTest.title}</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Finish the {chapter.track} chapters, then sit the graded test for up to 5 stars.
+              </p>
+            </div>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/tests/$testId" params={{ testId: phaseTest.id }}>
+                Go to phase test
+              </Link>
+            </Button>
+          </section>
+        )}
+        </>
       )}
 
       <nav className="mt-12 flex items-center justify-between gap-3 border-t border-border pt-6">

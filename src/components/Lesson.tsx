@@ -1,6 +1,11 @@
-import { Info, Lightbulb, TriangleAlert } from "lucide-react";
+import { Circle, CircleCheck, Info, Lightbulb, TriangleAlert } from "lucide-react";
+import { useMemo } from "react";
+import { toast } from "sonner";
 import { Diagram } from "@/components/Diagrams";
+import { Interactive, interactivesByChapter } from "@/components/InteractiveDiagrams";
+import { Button } from "@/components/ui/button";
 import type { LessonBlock } from "@/lib/lessons";
+import { useProgress } from "@/lib/progress";
 
 const calloutStyles = {
   info: { ring: "border-primary/40 bg-primary/5", icon: Info, tint: "text-primary" },
@@ -116,14 +121,93 @@ function Block({ block }: { block: LessonBlock }) {
   }
 }
 
-export function Lesson({ blocks }: { blocks: LessonBlock[] }) {
-  if (!blocks.length) return null;
+type Section = { id: string; title: string | null; blocks: LessonBlock[] };
+
+function toSections(blocks: LessonBlock[]): Section[] {
+  const sections: Section[] = [];
+  for (const block of blocks) {
+    if (block.type === "heading" || sections.length === 0) {
+      sections.push({
+        id: `s${sections.length}`,
+        title: block.type === "heading" ? block.text : null,
+        blocks: block.type === "heading" ? [] : [block],
+      });
+      continue;
+    }
+    sections[sections.length - 1]!.blocks.push(block);
+  }
+  return sections;
+}
+
+export function Lesson({ blocks, chapterId }: { blocks: LessonBlock[]; chapterId: string }) {
+  const { sectionsRead, actions } = useProgress();
+  const sections = useMemo(() => toSections(blocks), [blocks]);
+  const read = sectionsRead[chapterId] ?? [];
+  const widgets = interactivesByChapter[chapterId] ?? [];
+
+  if (!sections.length) return null;
+
+  const doneCount = sections.filter((s) => read.includes(s.id)).length;
+  const pct = (doneCount / sections.length) * 100;
+  const allRead = doneCount === sections.length;
+
+  function markSection(section: Section) {
+    const nowRead = actions.toggleSection(chapterId, section.id);
+    if (!nowRead) return;
+    const nextCount = sections.filter((s) => s.id === section.id || read.includes(s.id)).length;
+    if (nextCount === sections.length) {
+      const first = actions.completeChapter(chapterId);
+      toast.success("Lesson finished", {
+        description: first ? "Chapter marked complete — the next one is unlocked." : undefined,
+      });
+    }
+  }
+
   return (
     <section className="mt-12">
-      <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-primary">Lesson</h2>
-      {blocks.map((block, i) => (
-        <Block key={i} block={block} />
-      ))}
+      <div className="sticky top-24 z-10 -mx-4 mb-2 border-y border-border bg-background/85 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
+        <div className="flex items-center justify-between gap-3 text-xs">
+          <span className="font-mono uppercase tracking-[0.2em] text-primary">Lesson progress</span>
+          <span className="font-mono text-muted-foreground">
+            {doneCount}/{sections.length} sections
+          </span>
+        </div>
+        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary">
+          <div
+            className={`h-full rounded-full transition-[width] duration-300 ${allRead ? "bg-success" : "bg-primary"}`}
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+      </div>
+
+      {sections.map((section, si) => {
+        const isRead = read.includes(section.id);
+        const widget = widgets[si === 0 ? 0 : si === Math.floor(sections.length / 2) ? 1 : -1];
+        return (
+          <div key={section.id} className={isRead ? "opacity-95" : undefined}>
+            {section.title && (
+              <h3 className="mt-10 flex items-start gap-2 text-lg font-semibold sm:text-xl">
+                {isRead && <CircleCheck className="mt-1 size-4 shrink-0 text-success" />}
+                {section.title}
+              </h3>
+            )}
+            {section.blocks.map((block, i) => (
+              <Block key={i} block={block} />
+            ))}
+            {widget && <Interactive kind={widget} />}
+            <div className="mt-5 flex justify-end border-b border-dashed border-border pb-6">
+              <Button
+                size="sm"
+                variant={isRead ? "secondary" : "outline"}
+                onClick={() => markSection(section)}
+              >
+                {isRead ? <CircleCheck className="size-3.5" /> : <Circle className="size-3.5" />}
+                {isRead ? "Section read" : "Mark section read"}
+              </Button>
+            </div>
+          </div>
+        );
+      })}
     </section>
   );
 }
