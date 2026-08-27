@@ -90,9 +90,9 @@ const SyllabusIndexRoute = SyllabusIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const SyllabusChapterIdRoute = SyllabusChapterIdRouteImport.update({
-  id: '/$chapterId',
-  path: '/$chapterId',
-  getParentRoute: () => SyllabusRoute,
+  id: '/syllabus/$chapterId',
+  path: '/syllabus/$chapterId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const TestsTestIdRoute = TestsTestIdRouteImport.update({
   id: '/$testId',
@@ -214,6 +214,7 @@ export interface RootRouteChildren {
   TechniquesRoute: typeof TechniquesRoute
   TestsRoute: typeof TestsRouteWithChildren
   ApiAssistantRoute: typeof ApiAssistantRoute
+  SyllabusChapterIdRoute: typeof SyllabusChapterIdRoute
   SyllabusIndexRoute: typeof SyllabusIndexRoute
 }
 
@@ -312,10 +313,10 @@ declare module '@tanstack/react-router' {
     }
     '/syllabus/$chapterId': {
       id: '/syllabus/$chapterId'
-      path: '/$chapterId'
+      path: '/syllabus/$chapterId'
       fullPath: '/syllabus/$chapterId'
       preLoaderRoute: typeof SyllabusChapterIdRouteImport
-      parentRoute: typeof SyllabusRoute
+      parentRoute: typeof rootRouteImport
     }
     '/tests/$testId': {
       id: '/tests/$testId'
@@ -360,6 +361,7 @@ const rootRouteChildren: RootRouteChildren = {
   TechniquesRoute: TechniquesRoute,
   TestsRoute: TestsRouteWithChildren,
   ApiAssistantRoute: ApiAssistantRoute,
+  SyllabusChapterIdRoute: SyllabusChapterIdRoute,
   SyllabusIndexRoute: SyllabusIndexRoute,
 }
 export const routeTree = rootRouteImport
