@@ -205,9 +205,6 @@ function BlochSphere() {
       <text x={356} y={154} className="fill-muted-foreground font-mono text-[12px]">|+⟩</text>
       <text x={90} y={154} className="fill-muted-foreground font-mono text-[12px]">|−⟩</text>
       <text x={322} y={74} className="fill-primary font-mono text-[12px]">|ψ⟩</text>
-      <text x={110} y={288} className="fill-muted-foreground font-mono text-[11px]">
-        |ψ⟩ = cos(θ/2)|0⟩ + e^{"{"}iφ{"}"} sin(θ/2)|1⟩
-      </text>
     </svg>
   );
 }
