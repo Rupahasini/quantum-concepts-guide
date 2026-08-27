@@ -165,7 +165,7 @@ export function Lesson({ blocks, chapterId }: { blocks: LessonBlock[]; chapterId
 
   return (
     <section className="mt-12">
-      <div className="sticky top-16 z-10 -mx-4 mb-2 border-y border-border bg-background/85 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
+      <div className="sticky top-24 z-10 -mx-4 mb-2 border-y border-border bg-background/85 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
         <div className="flex items-center justify-between gap-3 text-xs">
           <span className="font-mono uppercase tracking-[0.2em] text-primary">Lesson progress</span>
           <span className="font-mono text-muted-foreground">
