@@ -31,7 +31,14 @@ function Frame({ children, viewBox }: { children: React.ReactNode; viewBox: stri
   );
 }
 
-const label = (x: number, y: number, text: string, size = 9, fill = M, anchor = "middle") => (
+const label = (
+  x: number,
+  y: number,
+  text: string,
+  size = 9,
+  fill = M,
+  anchor: "start" | "middle" | "end" = "middle",
+) => (
   <text x={x} y={y} fontSize={size} fill={fill} textAnchor={anchor} fontFamily="var(--font-mono, monospace)">
     {text}
   </text>
