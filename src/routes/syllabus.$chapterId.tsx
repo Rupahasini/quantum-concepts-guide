@@ -8,6 +8,8 @@ import { Quiz } from "@/components/Quiz";
 import { Button } from "@/components/ui/button";
 import { assignmentByChapter, tests } from "@/lib/assessments";
 import { chapters } from "@/lib/curriculum";
+import { lessons } from "@/lib/lessons";
+import { Lesson } from "@/components/Lesson";
 import { useProgress } from "@/lib/progress";
 
 export const Route = createFileRoute("/syllabus/$chapterId")({
@@ -107,7 +109,9 @@ function ChapterPage() {
         </div>
       </section>
 
-      <section className="mt-8">
+      <Lesson blocks={lessons[chapter.id] ?? []} />
+
+      <section className="mt-12">
         <h2 className="mb-3 text-lg font-semibold">Worked code</h2>
         <CodeBlock label={chapter.code.label} code={chapter.code.snippet} />
       </section>
