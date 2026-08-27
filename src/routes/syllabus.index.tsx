@@ -4,7 +4,7 @@ import { chapters } from "@/lib/curriculum";
 import { useProgress } from "@/lib/progress";
 import { Progress } from "@/components/ui/progress";
 
-export const Route = createFileRoute("/syllabus")({
+export const Route = createFileRoute("/syllabus/")({
   head: () => ({
     meta: [
       { title: "12-Chapter QML Syllabus — Quantum Learning Algorithms" },
