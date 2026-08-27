@@ -10,33 +10,211 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as ApplicationsRouteImport } from './routes/applications'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as RewardsRouteImport } from './routes/rewards'
+import { Route as SimulatorRouteImport } from './routes/simulator'
+import { Route as StackRouteImport } from './routes/stack'
+import { Route as SyllabusRouteImport } from './routes/syllabus'
+import { Route as TechniquesRouteImport } from './routes/techniques'
+import { Route as TestsRouteImport } from './routes/tests'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as ApiAssistantRouteImport } from './routes/api/assistant'
+import { Route as SyllabusChapterIdRouteImport } from './routes/syllabus.$chapterId'
+import { Route as TestsTestIdRouteImport } from './routes/tests.$testId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApplicationsRoute = ApplicationsRouteImport.update({
+  id: '/applications',
+  path: '/applications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RewardsRoute = RewardsRouteImport.update({
+  id: '/rewards',
+  path: '/rewards',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulatorRoute = SimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StackRoute = StackRouteImport.update({
+  id: '/stack',
+  path: '/stack',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SyllabusRoute = SyllabusRouteImport.update({
+  id: '/syllabus',
+  path: '/syllabus',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TechniquesRoute = TechniquesRouteImport.update({
+  id: '/techniques',
+  path: '/techniques',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestsRoute = TestsRouteImport.update({
+  id: '/tests',
+  path: '/tests',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiAssistantRoute = ApiAssistantRouteImport.update({
+  id: '/api/assistant',
+  path: '/api/assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SyllabusChapterIdRoute = SyllabusChapterIdRouteImport.update({
+  id: '/$chapterId',
+  path: '/$chapterId',
+  getParentRoute: () => SyllabusRoute,
+} as any)
+const TestsTestIdRoute = TestsTestIdRouteImport.update({
+  id: '/$testId',
+  path: '/$testId',
+  getParentRoute: () => TestsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/applications': typeof ApplicationsRoute
+  '/auth': typeof AuthRoute
+  '/projects': typeof ProjectsRoute
+  '/rewards': typeof RewardsRoute
+  '/simulator': typeof SimulatorRoute
+  '/stack': typeof StackRoute
+  '/syllabus': typeof SyllabusRouteWithChildren
+  '/techniques': typeof TechniquesRoute
+  '/tests': typeof TestsRouteWithChildren
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/api/assistant': typeof ApiAssistantRoute
+  '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
+  '/tests/$testId': typeof TestsTestIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/applications': typeof ApplicationsRoute
+  '/auth': typeof AuthRoute
+  '/projects': typeof ProjectsRoute
+  '/rewards': typeof RewardsRoute
+  '/simulator': typeof SimulatorRoute
+  '/stack': typeof StackRoute
+  '/syllabus': typeof SyllabusRouteWithChildren
+  '/techniques': typeof TechniquesRoute
+  '/tests': typeof TestsRouteWithChildren
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/api/assistant': typeof ApiAssistantRoute
+  '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
+  '/tests/$testId': typeof TestsTestIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/applications': typeof ApplicationsRoute
+  '/auth': typeof AuthRoute
+  '/projects': typeof ProjectsRoute
+  '/rewards': typeof RewardsRoute
+  '/simulator': typeof SimulatorRoute
+  '/stack': typeof StackRoute
+  '/syllabus': typeof SyllabusRouteWithChildren
+  '/techniques': typeof TechniquesRoute
+  '/tests': typeof TestsRouteWithChildren
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/api/assistant': typeof ApiAssistantRoute
+  '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
+  '/tests/$testId': typeof TestsTestIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/applications'
+    | '/auth'
+    | '/projects'
+    | '/rewards'
+    | '/simulator'
+    | '/stack'
+    | '/syllabus'
+    | '/techniques'
+    | '/tests'
+    | '/dashboard'
+    | '/api/assistant'
+    | '/syllabus/$chapterId'
+    | '/tests/$testId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/applications'
+    | '/auth'
+    | '/projects'
+    | '/rewards'
+    | '/simulator'
+    | '/stack'
+    | '/syllabus'
+    | '/techniques'
+    | '/tests'
+    | '/dashboard'
+    | '/api/assistant'
+    | '/syllabus/$chapterId'
+    | '/tests/$testId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/applications'
+    | '/auth'
+    | '/projects'
+    | '/rewards'
+    | '/simulator'
+    | '/stack'
+    | '/syllabus'
+    | '/techniques'
+    | '/tests'
+    | '/_authenticated/dashboard'
+    | '/api/assistant'
+    | '/syllabus/$chapterId'
+    | '/tests/$testId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  ApplicationsRoute: typeof ApplicationsRoute
+  AuthRoute: typeof AuthRoute
+  ProjectsRoute: typeof ProjectsRoute
+  RewardsRoute: typeof RewardsRoute
+  SimulatorRoute: typeof SimulatorRoute
+  StackRoute: typeof StackRoute
+  SyllabusRoute: typeof SyllabusRouteWithChildren
+  TechniquesRoute: typeof TechniquesRoute
+  TestsRoute: typeof TestsRouteWithChildren
+  ApiAssistantRoute: typeof ApiAssistantRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +226,153 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/applications': {
+      id: '/applications'
+      path: '/applications'
+      fullPath: '/applications'
+      preLoaderRoute: typeof ApplicationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rewards': {
+      id: '/rewards'
+      path: '/rewards'
+      fullPath: '/rewards'
+      preLoaderRoute: typeof RewardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulator': {
+      id: '/simulator'
+      path: '/simulator'
+      fullPath: '/simulator'
+      preLoaderRoute: typeof SimulatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stack': {
+      id: '/stack'
+      path: '/stack'
+      fullPath: '/stack'
+      preLoaderRoute: typeof StackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/syllabus': {
+      id: '/syllabus'
+      path: '/syllabus'
+      fullPath: '/syllabus'
+      preLoaderRoute: typeof SyllabusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/techniques': {
+      id: '/techniques'
+      path: '/techniques'
+      fullPath: '/techniques'
+      preLoaderRoute: typeof TechniquesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tests': {
+      id: '/tests'
+      path: '/tests'
+      fullPath: '/tests'
+      preLoaderRoute: typeof TestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/assistant': {
+      id: '/api/assistant'
+      path: '/api/assistant'
+      fullPath: '/api/assistant'
+      preLoaderRoute: typeof ApiAssistantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/syllabus/$chapterId': {
+      id: '/syllabus/$chapterId'
+      path: '/$chapterId'
+      fullPath: '/syllabus/$chapterId'
+      preLoaderRoute: typeof SyllabusChapterIdRouteImport
+      parentRoute: typeof SyllabusRoute
+    }
+    '/tests/$testId': {
+      id: '/tests/$testId'
+      path: '/$testId'
+      fullPath: '/tests/$testId'
+      preLoaderRoute: typeof TestsTestIdRouteImport
+      parentRoute: typeof TestsRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+interface SyllabusRouteChildren {
+  SyllabusChapterIdRoute: typeof SyllabusChapterIdRoute
+}
+
+const SyllabusRouteChildren: SyllabusRouteChildren = {
+  SyllabusChapterIdRoute: SyllabusChapterIdRoute,
+}
+
+const SyllabusRouteWithChildren = SyllabusRoute._addFileChildren(
+  SyllabusRouteChildren,
+)
+
+interface TestsRouteChildren {
+  TestsTestIdRoute: typeof TestsTestIdRoute
+}
+
+const TestsRouteChildren: TestsRouteChildren = {
+  TestsTestIdRoute: TestsTestIdRoute,
+}
+
+const TestsRouteWithChildren = TestsRoute._addFileChildren(TestsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  ApplicationsRoute: ApplicationsRoute,
+  AuthRoute: AuthRoute,
+  ProjectsRoute: ProjectsRoute,
+  RewardsRoute: RewardsRoute,
+  SimulatorRoute: SimulatorRoute,
+  StackRoute: StackRoute,
+  SyllabusRoute: SyllabusRouteWithChildren,
+  TechniquesRoute: TechniquesRoute,
+  TestsRoute: TestsRouteWithChildren,
+  ApiAssistantRoute: ApiAssistantRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
