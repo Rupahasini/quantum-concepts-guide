@@ -1,11 +1,25 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Atom, LogOut, Menu, Star } from "lucide-react";
+import { Atom, LogOut, Menu, Moon, Star, Sun } from "lucide-react";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { avatarFor, useProfile, useSession } from "@/lib/auth";
 import { useProgress } from "@/lib/progress";
+import { useTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
+
+function ThemeToggle() {
+  const { theme, toggle } = useTheme();
+  return (
+    <button
+      onClick={toggle}
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      className="grid size-9 place-items-center rounded-md border border-border text-muted-foreground transition-colors hover:text-foreground"
+    >
+      {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
+    </button>
+  );
+}
 
 function AccountMenu() {
   const { session, user, loading } = useSession();
@@ -71,6 +85,7 @@ const links = [
   { to: "/projects", label: "Projects" },
   { to: "/techniques", label: "Techniques" },
   { to: "/applications", label: "Applications" },
+  { to: "/research", label: "Research" },
   { to: "/rewards", label: "Rewards" },
   { to: "/stack", label: "Tech Stack" },
 ] as const;
@@ -124,6 +139,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2 lg:ml-0">
+          <ThemeToggle />
           <StarCounter />
           <AccountMenu />
           <button
