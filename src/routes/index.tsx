@@ -7,13 +7,13 @@ import { useProgress } from "@/lib/progress";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Quantum Learning Algorithms — Interactive QML Curriculum" },
+      { title: "QuantumQuest — Interactive QML Curriculum" },
       {
         name: "description",
         content:
           "A 12-chapter interactive platform for quantum machine learning: circuit simulator, hands-on Qiskit and PennyLane projects, and a star reward system.",
       },
-      { property: "og:title", content: "Quantum Learning Algorithms — Interactive QML Curriculum" },
+      { property: "og:title", content: "QuantumQuest — Interactive QML Curriculum" },
       {
         property: "og:description",
         content:

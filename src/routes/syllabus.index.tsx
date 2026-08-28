@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress";
 export const Route = createFileRoute("/syllabus/")({
   head: () => ({
     meta: [
-      { title: "12-Chapter QML Syllabus — Quantum Learning Algorithms" },
+      { title: "12-Chapter QML Syllabus — QuantumQuest" },
       {
         name: "description",
         content:

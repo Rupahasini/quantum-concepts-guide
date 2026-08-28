@@ -14,7 +14,7 @@ export const Route = createFileRoute("/tests/$testId")({
       return { meta: [{ title: "Test not found" }, { name: "robots", content: "noindex" }] };
     }
     const { test } = loaderData;
-    const title = `${test.title} — Quantum Learning Algorithms`;
+    const title = `${test.title} — QuantumQuest`;
     return {
       meta: [
         { title },

@@ -11,13 +11,13 @@ export const Route = createFileRoute("/auth")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Sign in or create your QLA learner account" },
+      { title: "Sign in or create your QuantumQuest learner account" },
       {
         name: "description",
         content:
           "Sign in with Google or email to track your quantum machine learning roadmap, level up your profile and earn stars.",
       },
-      { property: "og:title", content: "Sign in — Quantum Learning Algorithms" },
+      { property: "og:title", content: "Sign in — QuantumQuest" },
       {
         property: "og:description",
         content: "Create your learner profile and continue your 12-chapter quantum machine learning journey.",
