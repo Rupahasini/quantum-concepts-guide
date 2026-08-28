@@ -27,7 +27,7 @@ export const Route = createFileRoute("/syllabus/$chapterId")({
       };
     }
     const { chapter } = loaderData;
-    const title = `Ch ${chapter.index}: ${chapter.title} — Quantum Learning Algorithms`;
+    const title = `Ch ${chapter.index}: ${chapter.title} — QuantumQuest`;
     return {
       meta: [
         { title },

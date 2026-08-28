@@ -117,10 +117,10 @@ export function SiteHeader() {
           </span>
           <span className="leading-tight">
             <span className="block font-display text-sm font-semibold tracking-tight">
-              Quantum Learning Algorithms
+              QuantumQuest
             </span>
             <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              12-chapter QML platform
+              12-chapter quantum curriculum
             </span>
           </span>
         </Link>
@@ -176,7 +176,7 @@ export function SiteFooter() {
     <footer className="mt-24 border-t border-border/70 py-10">
       <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p>
-          Quantum Learning Algorithms — an interactive curriculum for Qiskit and PennyLane
+          QuantumQuest — an interactive curriculum for Qiskit and PennyLane
           practitioners.
         </p>
         <p className="font-mono text-xs">

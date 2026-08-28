@@ -7,7 +7,7 @@ import { useProgress } from "@/lib/progress";
 export const Route = createFileRoute("/tests")({
   head: () => ({
     meta: [
-      { title: "Graded phase tests & final exam — Quantum Learning Algorithms" },
+      { title: "Graded phase tests & final exam — QuantumQuest" },
       {
         name: "description",
         content:

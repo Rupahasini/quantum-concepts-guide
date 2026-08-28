@@ -81,11 +81,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Quantum Learning Algorithms" },
+      { title: "QuantumQuest" },
       {
         name: "description",
         content:
-          "Interactive platform for quantum machine learning: 12 chapters, a browser circuit simulator, hands-on projects and a star reward system.",
+          "QuantumQuest is an interactive platform for quantum machine learning: 12 chapters, a browser circuit simulator, hands-on projects and a star reward system.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

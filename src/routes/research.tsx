@@ -6,13 +6,13 @@ import { useState } from "react";
 export const Route = createFileRoute("/research")({
   head: () => ({
     meta: [
-      { title: "Latest Quantum Research — Quantum Learning Algorithms" },
+      { title: "Latest Quantum Research — QuantumQuest" },
       {
         name: "description",
         content:
           "Freshly fetched quantum computing and quantum machine learning papers, pulled live from the local research feed.",
       },
-      { property: "og:title", content: "Latest Quantum Research — Quantum Learning Algorithms" },
+      { property: "og:title", content: "Latest Quantum Research — QuantumQuest" },
       {
         property: "og:description",
         content:
