@@ -85,6 +85,7 @@ const links = [
   { to: "/projects", label: "Projects" },
   { to: "/techniques", label: "Techniques" },
   { to: "/applications", label: "Applications" },
+  { to: "/research", label: "Research" },
   { to: "/rewards", label: "Rewards" },
   { to: "/stack", label: "Tech Stack" },
 ] as const;
@@ -138,6 +139,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2 lg:ml-0">
+          <ThemeToggle />
           <StarCounter />
           <AccountMenu />
           <button

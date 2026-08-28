@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as ResearchRouteImport } from './routes/research'
 import { Route as RewardsRouteImport } from './routes/rewards'
 import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as StackRouteImport } from './routes/stack'
@@ -47,6 +48,11 @@ const AuthRoute = AuthRouteImport.update({
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResearchRoute = ResearchRouteImport.update({
+  id: '/research',
+  path: '/research',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RewardsRoute = RewardsRouteImport.update({
@@ -105,6 +111,7 @@ export interface FileRoutesByFullPath {
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/projects': typeof ProjectsRoute
+  '/research': typeof ResearchRoute
   '/rewards': typeof RewardsRoute
   '/simulator': typeof SimulatorRoute
   '/stack': typeof StackRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByTo {
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/projects': typeof ProjectsRoute
+  '/research': typeof ResearchRoute
   '/rewards': typeof RewardsRoute
   '/simulator': typeof SimulatorRoute
   '/stack': typeof StackRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/projects': typeof ProjectsRoute
+  '/research': typeof ResearchRoute
   '/rewards': typeof RewardsRoute
   '/simulator': typeof SimulatorRoute
   '/stack': typeof StackRoute
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
     | '/applications'
     | '/auth'
     | '/projects'
+    | '/research'
     | '/rewards'
     | '/simulator'
     | '/stack'
@@ -173,6 +183,7 @@ export interface FileRouteTypes {
     | '/applications'
     | '/auth'
     | '/projects'
+    | '/research'
     | '/rewards'
     | '/simulator'
     | '/stack'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/applications'
     | '/auth'
     | '/projects'
+    | '/research'
     | '/rewards'
     | '/simulator'
     | '/stack'
@@ -208,6 +220,7 @@ export interface RootRouteChildren {
   ApplicationsRoute: typeof ApplicationsRoute
   AuthRoute: typeof AuthRoute
   ProjectsRoute: typeof ProjectsRoute
+  ResearchRoute: typeof ResearchRoute
   RewardsRoute: typeof RewardsRoute
   SimulatorRoute: typeof SimulatorRoute
   StackRoute: typeof StackRoute
@@ -253,6 +266,13 @@ declare module '@tanstack/react-router' {
       path: '/projects'
       fullPath: '/projects'
       preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/research': {
+      id: '/research'
+      path: '/research'
+      fullPath: '/research'
+      preLoaderRoute: typeof ResearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/rewards': {
@@ -355,6 +375,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApplicationsRoute: ApplicationsRoute,
   AuthRoute: AuthRoute,
   ProjectsRoute: ProjectsRoute,
+  ResearchRoute: ResearchRoute,
   RewardsRoute: RewardsRoute,
   SimulatorRoute: SimulatorRoute,
   StackRoute: StackRoute,
